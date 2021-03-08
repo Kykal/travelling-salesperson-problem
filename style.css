@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+body {
+    background-color: rgb(54, 57, 63);
+    font-family: 'Montserrat';
+    color: aliceblue;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 2fr 1fr;
+    row-gap: 5%;
+}
+
+header{
+    grid-column: 1/4;
+    text-align: center;
+    background-color: #23272a;
+    padding: 0.6%;
+    font-size: xx-large;
+}
+
+.files{
+    text-align: center;
+    grid-column: 1/4;
+    grid-row: 2;
+    margin: auto;
+}
