@@ -10,11 +10,10 @@ route = []
 routeCoords = []
 nodesDistance = []
 nodesNumbers = []
-tempNodesDistances = []
-tempNodesNumbers = []
-tempRouteCoords = []
+tempNodes = []
+tempNumberNodes = []
+possibleNodes = -1
 totalDistance = 0
-maxIter = 10
 
 #Function to calculate Euclidean Distance
 def Eu2D(x1, y1, x2, y2):
@@ -52,13 +51,12 @@ startTime = time.time()
 
 #Nearest Neighbor with k-best method
 for i in range( 0, dimension-2 ) :
-    tempMinDist = sys.float_info.max
-    nodesDistance.clear()
+    minumumDistance = sys.float_info.max
+    possibleNodes = -1
     nodesNumbers.clear()
-    tempNodesDistances.clear()
-    tempNodesNumbers.clear()
-    possibleNodes = 0
-    for j in range( 0, n ) : #Obtain all euclidean distances
+    nodesDistance.clear()
+    
+    for j in range( 0, dimension ) : #Obtain all euclidean distances
         x2 = nodes[j][0]
         y2 = nodes[j][1]
         
@@ -66,61 +64,56 @@ for i in range( 0, dimension-2 ) :
         nodesDistance.append(euclideanDistance)
         nodesNumbers.append(j)
     status[initNumber] = False
+    tempInternStatus = status.copy()
+    tempStatus = status.copy()
 
-    for j in range(0, n) : 
-        if nodesDistance[j] < tempMinDist and nodesDistance[j] != 0 and status[j] == True :
-            tempMinDist = nodesDistance[j]
-            tempNumber = j
-            nodeSelected = nodes[j]
-            possibleNodes += 1
-    tempNodesDistances.append(tempMinDist)
-    tempNodesNumbers.append(tempNumber)
-    possibleNodes += 1
-    tempRouteCoords.append(nodeSelected)
+    if sum(tempStatus) > 0 :
+        for j in range(0, dimension) : #First kBest
+            if (tempInternStatus[j] == True) and (nodesDistance[j] < minumumDistance) :
+                minumumDistance = nodesDistance[j]
+                tempInternStatus[j] = False
+                tempNode = j
+        tempStatus[tempNode] = False
+        tempNodes.append(nodes[tempNode])
+        tempNumberNodes.append(tempNode)
+        minumumDistance = sys.float_info.max
+        possibleNodes += 1
 
-    tempMinDist = sys.float_info.max
-    if n > 1 :
-        for j in range(0, n) :
-            if (nodesDistance[j] < tempMinDist) and (nodesDistance[j] != 0) and (status[j] == True) and (nodesDistance[j] != tempNodesDistances[0]) :
-                tempMinDist = nodesDistance[j]
-                tempNumber = j
-                nodeSelected = nodes[j]
-                possibleNodes += 1
-    tempNodesDistances.append(tempMinDist)
-    tempNodesNumbers.append(tempNumber)
+    if sum(tempStatus) > 0 :
+        for j in range(0, dimension) : #First kBest
+            if (tempInternStatus[j] == True) and (nodesDistance[j] < minumumDistance) :
+                minumumDistance = nodesDistance[j]
+                tempInternStatus[j] = False
+                tempNode = j
+        tempStatus[tempNode] = False
+        tempNodes.append(nodes[tempNode])
+        tempNumberNodes.append(tempNode)
+        minumumDistance = sys.float_info.max
+        possibleNodes += 1
+
+    if sum(tempStatus) > 0 :
+        for j in range(0, dimension) : #First kBest
+            if (tempInternStatus[j] == True) and (nodesDistance[j] < minumumDistance) :
+                minumumDistance = nodesDistance[j]
+                tempInternStatus[j] = False
+                tempNode = j
+        tempStatus[tempNode] = False
+        tempNodes.append(nodes[tempNode])
+        tempNumberNodes.append(tempNode)
+        minumumDistance = sys.float_info.max
+        possibleNodes += 1
+
     
-    tempRouteCoords.append(nodeSelected)
+    kRand = rand.randint(0, possibleNodes)
+    status[ tempNumberNodes[kRand] ] = False
+    route.append(tempNumberNodes[kRand])
+    totalDistance += Eu2D(x1, x2, tempNodes[kRand][0], tempNodes[kRand][1])
+    x1 = tempNodes[kRand][0]
+    y1 = tempNodes[kRand][1]
 
-    tempMinDist = sys.float_info.max
-    if n > 2 :
-        for j in range(0, n) :
-            if (nodesDistance[j] < tempMinDist) and (nodesDistance[j] != 0) and (status[j] == True) and (nodesDistance[j] != tempNodesDistances[0]) and (nodesDistance[j] != tempNodesDistances[1]) :
-                tempMinDist = nodesDistance[j]
-                tempNumber = j
-                nodeSelected = nodes[j]
-                possibleNodes += 1
-    tempNodesDistances.append(tempMinDist)
-    tempNodesNumbers.append(tempNumber)
-    
-    tempRouteCoords.append(nodeSelected)
-    
-    randomN = rand.randint(0, possibleNodes-1)
-    route.append( tempNodesNumbers[randomN]+1 )
-    routeCoords.append( tempRouteCoords[randomN] )
-    status[ tempNodesNumbers[randomN] ] = False
-    print(tempNodesDistances)
 
-    x2 = nodeSelected[0]
-    y2 = nodeSelected[1]
-
-for i in range(0, dimension) :
-    if status[i] == True :
-        totalDistance += Eu2D(x2, y2, nodes[i][0], nodes[i][1])
-        route.append(i+1)
-
-print("\n")
-print(nodes[i])
-print(route)
+print("Status: %s" %status)
+print("Route: %s" %route)
 print("Total distance: %s" %totalDistance)
 
 tsp.close()
