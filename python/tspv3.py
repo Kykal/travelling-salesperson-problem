@@ -50,7 +50,7 @@ routeCoords.append(initCoords)
 startTime = time.time()
 
 #Nearest Neighbor with k-best method
-for i in range( 0, dimension-2 ) :
+for i in range( 0, dimension-1 ) :
     minumumDistance = sys.float_info.max
     possibleNodes = -1
     nodesNumbers.clear()
