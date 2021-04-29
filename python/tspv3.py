@@ -55,6 +55,8 @@ for i in range( 0, dimension-2 ) :
     possibleNodes = -1
     nodesNumbers.clear()
     nodesDistance.clear()
+    tempNodes.clear()
+    tempNumberNodes.clear()
     
     for j in range( 0, dimension ) : #Obtain all euclidean distances
         x2 = nodes[j][0]
@@ -76,11 +78,12 @@ for i in range( 0, dimension-2 ) :
         tempStatus[tempNode] = False
         tempNodes.append(nodes[tempNode])
         tempNumberNodes.append(tempNode)
+        tempInternStatus = tempStatus.copy()
         minumumDistance = sys.float_info.max
         possibleNodes += 1
 
     if sum(tempStatus) > 0 :
-        for j in range(0, dimension) : #First kBest
+        for j in range(0, dimension) : #Second kBest
             if (tempInternStatus[j] == True) and (nodesDistance[j] < minumumDistance) :
                 minumumDistance = nodesDistance[j]
                 tempInternStatus[j] = False
@@ -88,11 +91,12 @@ for i in range( 0, dimension-2 ) :
         tempStatus[tempNode] = False
         tempNodes.append(nodes[tempNode])
         tempNumberNodes.append(tempNode)
+        tempInternStatus = tempStatus.copy()
         minumumDistance = sys.float_info.max
         possibleNodes += 1
 
     if sum(tempStatus) > 0 :
-        for j in range(0, dimension) : #First kBest
+        for j in range(0, dimension) : #Third kBest
             if (tempInternStatus[j] == True) and (nodesDistance[j] < minumumDistance) :
                 minumumDistance = nodesDistance[j]
                 tempInternStatus[j] = False
@@ -100,17 +104,16 @@ for i in range( 0, dimension-2 ) :
         tempStatus[tempNode] = False
         tempNodes.append(nodes[tempNode])
         tempNumberNodes.append(tempNode)
+        tempInternStatus = tempStatus.copy()
         minumumDistance = sys.float_info.max
         possibleNodes += 1
 
-    
     kRand = rand.randint(0, possibleNodes)
     status[ tempNumberNodes[kRand] ] = False
     route.append(tempNumberNodes[kRand])
     totalDistance += Eu2D(x1, x2, tempNodes[kRand][0], tempNodes[kRand][1])
     x1 = tempNodes[kRand][0]
     y1 = tempNodes[kRand][1]
-
 
 print("Status: %s" %status)
 print("Route: %s" %route)
