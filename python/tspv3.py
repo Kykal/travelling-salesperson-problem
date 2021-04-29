@@ -14,6 +14,7 @@ tempNodes = []
 tempNumberNodes = []
 possibleNodes = -1
 totalDistance = 0
+bestDistance = sys.float_info.max
 
 #Function to calculate Euclidean Distance
 def Eu2D(x1, y1, x2, y2):
@@ -57,7 +58,7 @@ for i in range( 0, dimension-1 ) :
     nodesDistance.clear()
     tempNodes.clear()
     tempNumberNodes.clear()
-    
+
     for j in range( 0, dimension ) : #Obtain all euclidean distances
         x2 = nodes[j][0]
         y2 = nodes[j][1]
@@ -110,12 +111,14 @@ for i in range( 0, dimension-1 ) :
 
     kRand = rand.randint(0, possibleNodes)
     status[ tempNumberNodes[kRand] ] = False
-    route.append(tempNumberNodes[kRand])
+    route.append(tempNumberNodes[kRand]+1)
     totalDistance += Eu2D(x1, x2, tempNodes[kRand][0], tempNodes[kRand][1])
     x1 = tempNodes[kRand][0]
     y1 = tempNodes[kRand][1]
 
-print("Status: %s" %status)
+route.append(initNumber+1)
+totalDistance += Eu2D( x1, y1, initCoords[0], initCoords[1] )
+
 print("Route: %s" %route)
 print("Total distance: %s" %totalDistance)
 
