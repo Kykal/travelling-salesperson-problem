@@ -9,7 +9,7 @@ route = []
 routeCoords = []
 totalDistance = 0
 actualTime = 0
-timeLimit = 600.0 #seconds
+timeLimit = 60.0 #seconds
 position = 1
 upgrades = 0
 loop = True
@@ -20,7 +20,7 @@ def Eu2D(x1, y1, x2, y2):
     return np.sqrt( (x1-x2)**2 + (y1-y2)**2 )
 
 #Open the file we want to use
-tsp = open("TSP/ulysses16.tsp", "r")
+tsp = open("TSP/test.tsp", "r")
 
 #Jump lines to 'Dimension', save its dimension and jump to coordenates
 for x in range(3):
@@ -76,9 +76,6 @@ for j in range(0, dimension-1):
         loop = False
         break
 
-print( "Route: %s" %route )
-print( "Total distance: {:,.5f}\n".format(totalDistance) )
-
 #Local Search
 temp = route.copy()
 
@@ -120,17 +117,22 @@ while loop == True and actualTime < timeLimit:
             break
 
 if actualTime >= timeLimit :
-    print("Limit time exceeded:\n\tActual time: %s\n\tTime limit: %s seconds." %(actualTime, timeLimit) )
+    print( "Limit time exceeded (%s seconds)." %timeLimit )
     loop = False
 if upgrades == 0 :
+    route.append(initNumber+1)
     print("\nThere are no better routes to take.\n")
+    print( "Best route: %s" %route)
 else :
-    print( "Best distance: {:,.5f}".format( totalDistance) )
-    print( "Best route: %s\nTimes upgraded: %s\nTimes evolved: %s" %(newRoute, upgrades, evolution) )
+    newRoute.append(initNumber+1)
+    print( "\nBest route: %s" %newRoute)
+
+print("[x1: %s][y1: %s]" %(x1, y1))
+print("[x2: %s][y2: %s]" %(x2, y2))
 
 #Algorithm timer ends
 execTime = time.time() - startTime
-
-print( "\nExecution time: %s seconds.\n" %execTime )
+print( "Best distance: {:,.5f}".format( totalDistance) )
+print( "Execution time: %s seconds.\n" %execTime )
 
 tsp.close()

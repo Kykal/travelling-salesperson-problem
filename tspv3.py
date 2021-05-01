@@ -17,14 +17,16 @@ totalDistance = 0
 bestDistance = sys.float_info.max
 tempInternStatus = []
 actualTime = 0
-timeLimit = 10.0 #seconds
+timeLimit = 20.0 #seconds
+timeLimitExceed = False
 
 #Function to calculate Euclidean Distance
 def Eu2D(x1, y1, x2, y2):
     return np.sqrt( (x1-x2)**2 + (y1-y2)**2 )
 
 #Open the file we want to use
-tsp = open("TSP/ulysses16.tsp", "r")
+filename = "ulysses16"
+tsp = open("TSP/"+filename+".tsp", "r")
 
 #Jump lines to 'Dimension', save its dimension and jump to coordenates
 for x in range(3):
@@ -41,7 +43,9 @@ for i in range(0, dimension):
 status = [True for i in range(dimension)]
 
 #Asks user where to start, save input as integer subtracting one. Saves initial coordinates as 'initCoords' and its coordinates.
+print("%s loaded." %filename)
 initNumber = int( input("From 1 to %s\n\tWhere do you want to start?: " %dimension) ) - 1
+print("Calculating, plase wait.\n")
 initCoords = nodes[initNumber]
 x1 = initCoords[0]
 y1 = initCoords[1]
@@ -57,6 +61,7 @@ startTime = time.time()
 for a in range(0, 3**dimension) :
     actualTime = time.time() - startTime
     if actualTime >= timeLimit :
+        timeLimitExceed = True
         break
     route.clear()
     route.append(initNumber+1)
@@ -73,6 +78,7 @@ for a in range(0, 3**dimension) :
     for i in range( 0, dimension-1 ) :
         actualTime = time.time() - startTime
         if actualTime >= timeLimit :
+            timeLimitExceed = True
             break
         minumumDistance = sys.float_info.max
         possibleNodes = -1
@@ -84,6 +90,7 @@ for a in range(0, 3**dimension) :
         for j in range( 0, dimension ) : #Obtain all euclidean distances
             actualTime = time.time() - startTime
             if actualTime >= timeLimit :
+                timeLimitExceed = True
                 break
             x2 = nodes[j][0]
             y2 = nodes[j][1]
@@ -98,10 +105,12 @@ for a in range(0, 3**dimension) :
         if sum(tempStatus) > 0 :
             actualTime = time.time() - startTime
             if actualTime >= timeLimit :
+                timeLimitExceed = True
                 break
             for j in range(0, dimension) : #First kBest
                 actualTime = time.time() - startTime
                 if actualTime >= timeLimit :
+                    timeLimitExceed = True
                     break
                 if (tempInternStatus[j] == True) and (nodesDistance[j] < minumumDistance) :
                     minumumDistance = nodesDistance[j]
@@ -117,10 +126,12 @@ for a in range(0, 3**dimension) :
         if sum(tempStatus) > 0 :
             actualTime = time.time() - startTime
             if actualTime >= timeLimit :
+                timeLimitExceed = True
                 break
             for j in range(0, dimension) : #Second kBest
                 actualTime = time.time() - startTime
                 if actualTime >= timeLimit :
+                    timeLimitExceed = True
                     break
                 if (tempInternStatus[j] == True) and (nodesDistance[j] < minumumDistance) :
                     minumumDistance = nodesDistance[j]
@@ -136,10 +147,12 @@ for a in range(0, 3**dimension) :
         if sum(tempStatus) > 0 :
             actualTime = time.time() - startTime
             if actualTime >= timeLimit :
+                timeLimitExceed = True
                 break
             for j in range(0, dimension) : #Third kBest
                 actualTime = time.time() - startTime
                 if actualTime >= timeLimit :
+                    timeLimitExceed = True
                     break
                 if (tempInternStatus[j] == True) and (nodesDistance[j] < minumumDistance) :
                     minumumDistance = nodesDistance[j]
@@ -155,25 +168,29 @@ for a in range(0, 3**dimension) :
         kRand = rand.randint(0, possibleNodes)
         status[ tempNumberNodes[kRand] ] = False
         route.append(tempNumberNodes[kRand]+1)
+        
         totalDistance += Eu2D(x1, x2, tempNodes[kRand][0], tempNodes[kRand][1])
         x1 = tempNodes[kRand][0]
         y1 = tempNodes[kRand][1]
-
+        
     route.append(initNumber+1)
     totalDistance += Eu2D( x1, y1, initCoords[0], initCoords[1] )
-
+    realTotalDistance = totalDistance.copy()
+    realRoute = route.copy()
     actualTime = time.time() - startTime
-    print( "Cycle: %s\tDistance: %s\tTime: %s" %(a+1, totalDistance, actualTime) )
-    if totalDistance < bestDistance :
-        bestDistance = totalDistance
-        bestRoute = route
+    if totalDistance < bestDistance and timeLimitExceed == False:
+        bestDistance = realTotalDistance.copy()
+        bestRoute = realRoute.copy()
+    
+    break
 
 if actualTime >= timeLimit :
-    print("\nTime limit exceeded ({:,.5f} seconds).Terminating program.\n\tTime: {:,.5f} seconds\n" .format( timeLimit, actualTime))
+    print( "\nTime limit exceeded ({:,.5f} seconds). Terminating program." .format(timeLimit) )
 
 execTime = time.time() - startTime
-print( "\nRoute: %s" %bestRoute )
-print( "Best distance: {:,.5f} distance units" .format( bestDistance ) )
+print( "\nFilename: "+filename )
+print( "Route: %s" %bestRoute )
+print( "Best distance: {:,.5f} distance units" .format( bestDistance/2 ) )
 print( "Executed time: {:,.5f} seconds" .format( execTime ))
 
 tsp.close()

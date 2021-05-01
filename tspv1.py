@@ -76,9 +76,9 @@ while k < n:
 execTime = time.time() - startTime
 
 nearn.append(f)
-
-print("\nRoute: %s" %nearn)
-print("\nTotal distance: %s units" %total )
-print("Execution time: %s s." %execTime)
+print( "\n"+tsp.name )
+print("Route: %s" %nearn)
+print("Total distance: %s units" %total )
+print("Execution time: %s seconds" %execTime)
 
 tsp.close()
