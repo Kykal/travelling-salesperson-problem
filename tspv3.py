@@ -25,7 +25,7 @@ def Eu2D(x1, y1, x2, y2):
     return np.sqrt( (x1-x2)**2 + (y1-y2)**2 )
 
 #Open the file we want to use
-filename = "ulysses16"
+filename = "att48"
 tsp = open("TSP/"+filename+".tsp", "r")
 
 #Jump lines to 'Dimension', save its dimension and jump to coordenates
@@ -43,7 +43,7 @@ for i in range(0, dimension):
 status = [True for i in range(dimension)]
 
 #Asks user where to start, save input as integer subtracting one. Saves initial coordinates as 'initCoords' and its coordinates.
-print("%s loaded." %filename)
+print("%s file loaded." %filename)
 initNumber = int( input("From 1 to %s\n\tWhere do you want to start?: " %dimension) ) - 1
 print("Calculating, plase wait.\n")
 initCoords = nodes[initNumber]
@@ -169,10 +169,10 @@ for a in range(0, 3**dimension) :
         status[ tempNumberNodes[kRand] ] = False
         route.append(tempNumberNodes[kRand]+1)
         
-        totalDistance += Eu2D(x1, x2, tempNodes[kRand][0], tempNodes[kRand][1])
+        totalDistance += Eu2D(x1, y1, tempNodes[kRand][0], tempNodes[kRand][1])
         x1 = tempNodes[kRand][0]
         y1 = tempNodes[kRand][1]
-        
+
     route.append(initNumber+1)
     totalDistance += Eu2D( x1, y1, initCoords[0], initCoords[1] )
     realTotalDistance = totalDistance.copy()
@@ -181,16 +181,13 @@ for a in range(0, 3**dimension) :
     if totalDistance < bestDistance and timeLimitExceed == False:
         bestDistance = realTotalDistance.copy()
         bestRoute = realRoute.copy()
-    
-    break
 
 if actualTime >= timeLimit :
     print( "\nTime limit exceeded ({:,.5f} seconds). Terminating program." .format(timeLimit) )
 
 execTime = time.time() - startTime
-print( "\nFilename: "+filename )
 print( "Route: %s" %bestRoute )
-print( "Best distance: {:,.5f} distance units" .format( bestDistance/2 ) )
+print( "Best distance: {:,.5f} distance units" .format( bestDistance ) )
 print( "Executed time: {:,.5f} seconds" .format( execTime ))
 
 tsp.close()
