@@ -20,7 +20,7 @@ def Eu2D(x1, y1, x2, y2):
     return np.sqrt( (x1-x2)**2 + (y1-y2)**2 )
 
 #Open the file we want to use.
-tsp = open("TSP/test.tsp", "r")
+tsp = open("TSP/ulysses16.tsp", "r")
 
 #Save its information.
 while infoLoop == False :
