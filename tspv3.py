@@ -25,7 +25,7 @@ def Eu2D(x1, y1, x2, y2):
     return np.sqrt( (x1-x2)**2 + (y1-y2)**2 )
 
 #Open the file we want to use
-filename = "test"
+filename = "ulysses16"
 tsp = open("TSP/"+filename+".tsp", "r")
 
 #Jump lines to 'Dimension', save its dimension and jump to coordenates
