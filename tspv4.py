@@ -16,7 +16,7 @@ routeDistance = 0
 realRoute = []
 realDistance = 0
 alpha = 0.1 #Greedy ಠ_ಠ
-timeLimit = 5.0 #seconds
+timeLimit = 10.0 #seconds
 bestDistance = sys.float_info.max
 timeLimitExceed = False
 
@@ -25,7 +25,7 @@ def Eu2D(x1, y1, x2, y2):
     return np.sqrt( (x1-x2)**2 + (y1-y2)**2 )
 
 #Open the file we want to use.
-tsp = open("TSP/test.tsp", "r")
+tsp = open("TSP/ulysses16.tsp", "r")
 
 #Save its information.
 while infoLoop == False :
@@ -57,6 +57,10 @@ nodeBool[initNumber] = False
 
 #Multi-start with alpha
 for x in range( 0, 3**dimension ) : 
+    actualTime = time.time() - startTime
+    if actualTime >= timeLimit :
+        timeLimitExceed = True
+        break
     x1 = nodes[initNumber][0]
     y1 = nodes[initNumber][1]
     route.clear()
@@ -68,6 +72,9 @@ for x in range( 0, 3**dimension ) :
     realRoute.clear()
 
     for i in range( 0, dimension-1 ) :
+        if actualTime >= timeLimit :
+            timeLimitExceed = True
+            break
         tempMinEucDistance = sys.float_info.max
         tempMaxEucDistance = 0
         tempNodes.clear()
@@ -118,10 +125,16 @@ for x in range( 0, 3**dimension ) :
     realRoute = route.copy()
     realDistance = routeDistance.copy()
 
+    
     if realDistance < bestDistance :
         bestDistance = realDistance.copy()
         bestRoute = realRoute.copy()
         print("Cyle: {:,.0f}\tBest distance at the moment: {:,.5f}" .format(x+1, bestDistance))
+    
+    actualTime = time.time() - startTime
+    if actualTime >= timeLimit :
+        print( "\nTime limit exceeded [{:,.0f} second(s)]. Terminating program." .format(timeLimit) )
+        break
 
 
 execTime = time.time() - startTime
