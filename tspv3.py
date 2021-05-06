@@ -181,7 +181,7 @@ for a in range(0, 3**dimension) :
     if totalDistance < bestDistance and timeLimitExceed == False:
         bestDistance = realTotalDistance.copy()
         bestRoute = realRoute.copy()
-        print( "Cyle: {:,.0f}\tBest Distance at the moment: {:,.5f}" .format( a+1, bestDistance ) )
+        print( "Cyle: {:,.0f}\t\tBest Distance at the moment: {:,.5f}" .format( a+1, bestDistance ) )
 
 if actualTime >= timeLimit :
     print( "\nTime limit exceeded ({:,.5f} seconds). Terminating program." .format(timeLimit) )

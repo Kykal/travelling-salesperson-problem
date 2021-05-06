@@ -5,7 +5,7 @@ import time
 def Eu2D(x1, y1, x2, y2):           #Function to calculate its euclidean distance
     return np.sqrt( (x1-x2)**2 + (y1-y2)**2 )
 
-tsp = open("TSP/ulysses16.tsp", "r") #Here we type the filename of the .tsp we want to use.
+tsp = open("TSP/test.tsp", "r") #Here we type the filename of the .tsp we want to use.
 
 for x in range(3):  #Jump lines to Dimension
     tsp.readline()
