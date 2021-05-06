@@ -17,7 +17,7 @@ totalDistance = 0
 bestDistance = sys.float_info.max
 tempInternStatus = []
 actualTime = 0
-timeLimit = 20.0 #seconds
+timeLimit = 5.0 #seconds
 timeLimitExceed = False
 
 #Function to calculate Euclidean Distance
@@ -25,16 +25,16 @@ def Eu2D(x1, y1, x2, y2):
     return np.sqrt( (x1-x2)**2 + (y1-y2)**2 )
 
 #Open the file we want to use
-filename = "att48"
+filename = "test"
 tsp = open("TSP/"+filename+".tsp", "r")
 
 #Jump lines to 'Dimension', save its dimension and jump to coordenates
 for x in range(3):
     tsp.readline()
 dimension = int( tsp.readline().split()[1] )
+n = dimension-1
 for x in range(2):
     tsp.readline()
-n = dimension-1
 
 #Save coordinates in a matrix called 'nodes' and assings the status of True to all nodes.
 for i in range(0, dimension):
@@ -43,7 +43,7 @@ for i in range(0, dimension):
 status = [True for i in range(dimension)]
 
 #Asks user where to start, save input as integer subtracting one. Saves initial coordinates as 'initCoords' and its coordinates.
-print("%s file loaded." %filename)
+print("\n%s file loaded." %filename)
 initNumber = int( input("From 1 to %s\n\tWhere do you want to start?: " %dimension) ) - 1
 print("Calculating, plase wait.\n")
 initCoords = nodes[initNumber]
@@ -181,6 +181,7 @@ for a in range(0, 3**dimension) :
     if totalDistance < bestDistance and timeLimitExceed == False:
         bestDistance = realTotalDistance.copy()
         bestRoute = realRoute.copy()
+        print( "Cyle: {:,.0f}\tBest Distance at the moment: {:,.5f}" .format( a+1, bestDistance ) )
 
 if actualTime >= timeLimit :
     print( "\nTime limit exceeded ({:,.5f} seconds). Terminating program." .format(timeLimit) )
