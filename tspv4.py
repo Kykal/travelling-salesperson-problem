@@ -17,7 +17,7 @@ routeCoords = []
 realRoute = []
 realDistance = 0
 alpha = 0.1 #Greedy ಠ_ಠ
-timeLimit = 600.0 #seconds
+timeLimit = 100.0 #seconds
 bestDistance = sys.float_info.max
 timeLimitExceed = False
 
@@ -26,7 +26,7 @@ def Eu2D(x1, y1, x2, y2):
     return np.sqrt( (x1-x2)**2 + (y1-y2)**2 )
 
 #Open the file we want to use.
-tsp = open("TSP/eil76.tsp", "r")
+tsp = open("TSP/pla33810.tsp", "r")
 
 #Save its information.
 while infoLoop == False :
@@ -156,16 +156,16 @@ for x in range( 0, 3**dimension ) :
         if lsDistance < bestDistance :
             bestDistance = lsDistance.copy()
             bestRoute = realRoute.copy()
-            print("Local Search notification:\n\tCyle: {:,.0f}\tBest distance at the moment: {:,.5f}" .format(x+1, bestDistance))
+            print("Local Search notification:\n\tCyle: {:,.0f}\tBest distance at the moment: {:,.5f}" .format(x+1, bestDistance).replace( ',', ' ' ))
             print( "\tRoute: %s\n" %realRoute)
     
     actualTime = time.time() - startTime
     if actualTime >= timeLimit :
-        print( "\nTime limit exceeded [{:,.0f} second(s)]. Terminating program." .format(timeLimit) )
+        print( "\nTime limit exceeded [{:,.0f} second(s)]. Terminating program." .format(timeLimit).replace( ',', ' ' ) )
         break
 
 execTime = time.time() - startTime
 
 print( "\nBest route: %s" %bestRoute)
-print( "Best distance: {:,.2f} distance units" .format( bestDistance ) )
+print( "Best distance: {:,.2f} distance units" .format( bestDistance ).replace( ',', ' ' ) )
 print( "Time elapsed: %s seconds\n" %execTime)
