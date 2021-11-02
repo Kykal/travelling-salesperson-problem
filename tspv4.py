@@ -1,7 +1,8 @@
+#NOT WORKING/BROKEN
+
 import numpy as np
 import sys
 import time
-import math
 import random as rand
 
 #Declaring variables
@@ -26,7 +27,7 @@ def Eu2D(x1, y1, x2, y2):
     return np.sqrt( (x1-x2)**2 + (y1-y2)**2 )
 
 #Open the file we want to use.
-tsp = open("TSP/pla33810.tsp", "r")
+tsp = open("TSP/eil76.tsp", "r")
 
 #Save its information.
 while infoLoop == False :
@@ -169,3 +170,4 @@ execTime = time.time() - startTime
 print( "\nBest route: %s" %bestRoute)
 print( "Best distance: {:,.2f} distance units" .format( bestDistance ).replace( ',', ' ' ) )
 print( "Time elapsed: %s seconds\n" %execTime)
+print(dimension)
